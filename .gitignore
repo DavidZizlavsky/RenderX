@@ -1,0 +1,41 @@
+# Build directories
+build/
+out/
+bin/
+
+# Visual Studio
+.vs/
+*.VC.db
+*.VC.opendb
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio generated files
+x64/
+Debug/
+Release/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+install_manifest.txt
+
+# Generated solutions
+*.sln
+
+# Ninja
+.ninja*
+build.ninja
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+
+# Vulkan shader binaries
+*.spv
