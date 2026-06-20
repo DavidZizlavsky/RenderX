@@ -4,6 +4,11 @@ project(RenderX)
 
 include(FetchContent)
 
+file(GLOB_RECURSE RENDERX_HEADERS
+    RenderX/include/*.h
+    RenderX/include/*.hpp
+)
+
 file(GLOB_RECURSE RENDERX_SOURCES
     RenderX/src/*.cpp
 )
@@ -16,6 +21,7 @@ add_library(
     RenderX
     STATIC
     ${RENDERX_SOURCES}
+    ${RENDERX_HEADERS}
 )
 
 add_executable(
