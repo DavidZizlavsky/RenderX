@@ -1,12 +1,11 @@
 #include <iostream>
-#include "dummy.h"
+#include <RenderX/Renderer.hpp>
 #include <GLFW/glfw3.h>
 
-int main()
-{
-    if (!glfwInit())
-    {
-        std::cout << "Failed to initialize GLFW" << std::endl;
+int main() {
+    // Initialize GLFW
+    if (!glfwInit()) {
+        std::cout << "[App] Failed to initialize GLFW" << std::endl;
         return -1;
     }
 
@@ -15,23 +14,36 @@ int main()
 
     GLFWwindow* window = glfwCreateWindow(1280, 720, "RenderX Vulkan Window", nullptr, nullptr);
 
-    if (!window)
-    {
-        std::cout << "Failed to create GLFW window\n";
+    if (!window) {
+        std::cout << "[App] Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
 
-    std::cout << "GLFW window created\n";
+    std::cout << "[App] GLFW window created" << std::endl;
 
-    RenderX::init();
+    RenderX::Renderer renderer;
+
+    // Create config and enable debugging
+    RenderX::Config renderConfig;
+    renderConfig.debugging = true;
+
+    if (!renderer.Initialize(renderConfig)) {
+        std::cout << "[App] Failed to initialize RenderX renderer" << std::endl;
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        return -1;
+    }
 
     // Main loop
-    while (!glfwWindowShouldClose(window))
-    {
+    while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
     }
 
+    // Cleanup Vulkan
+    renderer.Shutdown();
+
+    // Cleanup GLFW
     glfwDestroyWindow(window);
     glfwTerminate();
 
