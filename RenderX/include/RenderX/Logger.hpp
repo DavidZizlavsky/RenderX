@@ -1,25 +1,14 @@
 #pragma once
-#include "RenderX/Assert.hpp"
 #include <iostream>
-#include <string>
 
-namespace RenderX {
-	namespace Logger {
-		static void Info(std::string message) {
-			RENDERX_ASSERT(message.length() > 0);
+#define RX_LOG_INFO(message) \
+	std::cout << "[RenderX][INFO] " << message << std::endl;
 
-			std::cout << "[RenderX] " << message << std::endl;
-		}
-		static void Error(std::string message) {
-			RENDERX_ASSERT(message.length() > 0);
+#define RX_LOG_WARNING(message) \
+	std::cout << "[RenderX][WARNING] " << message << std::endl;
 
-			std::cout << "[RenderX] " << message << std::endl;
-		}
-		static void VulkanDebug(std::string message, std::string severity) {
-			RENDERX_ASSERT(message.length() > 0);
-			RENDERX_ASSERT(severity.length() > 0);
+#define RX_LOG_ERROR(message) \
+	std::cerr << "[RenderX][ERROR] " << message << std::endl;
 
-			std::cout << "[Vulkan] [" << severity << "] " << message << std::endl;
-		}
-	}
-}
+#define RX_LOG_VULKAN_MESSENGER(message, severity) \
+	std::cerr << "[Vulkan][" << severity << "] " << message << std::endl;

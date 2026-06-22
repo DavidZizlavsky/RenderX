@@ -1,6 +1,7 @@
 #include "RenderX/Vulkan/VulkanDebugMessenger.hpp"
 #include "RenderX/Logger.hpp"
 #include <vulkan/vulkan.h>
+#include <string>
 
 namespace RenderX {
     // Static function used as a callback for the debug messenger
@@ -26,7 +27,7 @@ namespace RenderX {
         }
 
         // Prints message from callback to error stream
-        Logger::VulkanDebug(pCallbackData->pMessage, severity);
+        RX_LOG_VULKAN_MESSENGER(pCallbackData->pMessage, severity);
         return VK_FALSE;
     }
 

@@ -18,7 +18,7 @@ namespace RenderX {
 
         // Allocation failed
         if (m_context == nullptr) {
-            Logger::Error("Failed to allocate memory for VulkanContext class");
+            RX_LOG_ERROR("Failed to allocate memory for VulkanContext class");
             return false;
         }
 
@@ -27,14 +27,14 @@ namespace RenderX {
 
         // Initialize the Vulkan instance
         if (!m_context->m_instance.Initialize(m_context->m_config)) {
-            Logger::Error("Failed to initialize VulkanInstance");
+            RX_LOG_ERROR("Failed to initialize VulkanInstance");
             return false;
         }
 
         // If debugging is enabled initialize the debug messenger
         if (m_context->m_config.debugging) {
             if (!m_context->m_debugMessenger.Initialize(m_context->m_instance.GetHandle())) {
-                Logger::Error("Failed to initialize debug messenger");
+                RX_LOG_ERROR("Failed to initialize debug messenger");
                 return false;
             }
         }

@@ -52,13 +52,13 @@ namespace RenderX {
 
         // Check if all requested layers are supported
         if (!CheckLayerSupport(layers)) {
-            Logger::Error("Layer support check failed");
+            RX_LOG_ERROR("Layer support check failed");
             return false;
         }
 
         // Check if all extensions are supported
         if (!CheckExtensionSupport(extensions)) {
-            Logger::Error("Extensions support check failed");
+            RX_LOG_ERROR("Extensions support check failed");
             return false;
         }
 
@@ -80,15 +80,15 @@ namespace RenderX {
             createInfo.pNext = &debugMessengerCreateInfo;
 
             // Prints layer and extension count in debug mode
-            Logger::Info(std::string("Layer count: ") + std::to_string(createInfo.enabledLayerCount));
-            Logger::Info(std::string("Extension count: ") + std::to_string(createInfo.enabledExtensionCount));
+            RX_LOG_INFO("Layer count: " << createInfo.enabledLayerCount);
+            RX_LOG_INFO("Extension count: " << createInfo.enabledExtensionCount);
         }
 
         // Tries to create Vulkan instance
         VkResult result = vkCreateInstance(&createInfo, nullptr, &m_instance);
 
         if (result != VK_SUCCESS) {
-            Logger::Error("Failed to create Vulkan instance");
+            RX_LOG_ERROR("Failed to create Vulkan instance");
             return false;
         }
 
@@ -126,7 +126,7 @@ namespace RenderX {
 
             if (!found) {
                 missingLayerCount++;
-                Logger::Error(std::string("Missing layer: ") + requestedLayer);
+                RX_LOG_ERROR("Missing layer: " << requestedLayer);
             }
         }
 
@@ -156,7 +156,7 @@ namespace RenderX {
 
             if (!found) {
                 missingExtensionCount++;
-                Logger::Error(std::string("Missing extension: ") + requestedExtension);
+                RX_LOG_ERROR("Missing extension: " << requestedExtension);
             }
         }
 
