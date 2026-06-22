@@ -1,6 +1,7 @@
 #pragma once
 #include "RenderX/Config.hpp"
 #include <vulkan/vulkan.h>
+#include <vector>
 
 namespace RenderX {
 	/**
@@ -29,6 +30,22 @@ namespace RenderX {
 		VkInstance GetHandle() const { return m_instance; };
 	private:
 		VkInstance m_instance = VK_NULL_HANDLE;
+
+		/**
+		 * @brief Checks if all of the requested layers are available
+		 *
+		 * @param layers: List of requested layers
+		 * @return True if all layers are available
+		 */
+		bool CheckLayerSupport(const std::vector<const char*>& layers);
+
+		/**
+		 * @brief Checks if all of the requested extensions are available
+		 *
+		 * @param layers: List of requested extensions
+		 * @return True if all extensions are available
+		 */
+		bool CheckExtensionSupport(const std::vector<const char*>& extensions);
 
 		// Validation layers and debug extensions static constants
 		static constexpr const char* validationLayers[] = { "VK_LAYER_KHRONOS_validation" };

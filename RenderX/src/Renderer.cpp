@@ -1,8 +1,8 @@
 #include "RenderX/Renderer.hpp"
 #include "RenderX/Config.hpp"
+#include "RenderX/Logger.hpp"
 #include "RenderX/Vulkan/VulkanInstance.hpp"
 #include "RenderX/Vulkan/VulkanContext.hpp"
-#include <iostream>
 #include <memory>
 
 namespace RenderX {
@@ -18,6 +18,7 @@ namespace RenderX {
 
         // Allocation failed
         if (m_context == nullptr) {
+            Logger::Error("Failed to allocate memory for VulkanContext class");
             return false;
         }
 
@@ -26,13 +27,15 @@ namespace RenderX {
 
         // Initialize the Vulkan instance
         if (!m_context->m_instance.Initialize(m_context->m_config)) {
+            Logger::Error("Failed to initialize VulkanInstance");
             return false;
         }
 
         // If debugging is enabled initialize the debug messenger
         if (m_context->m_config.debugging) {
             if (!m_context->m_debugMessenger.Initialize(m_context->m_instance.GetHandle())) {
-                std::cerr << "[RenderX] Failed to initialize debug messenger" << std::endl;
+                Logger::Error("Failed to initialize debug messenger");
+                return false;
             }
         }
 

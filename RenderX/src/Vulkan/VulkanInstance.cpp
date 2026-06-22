@@ -1,10 +1,10 @@
 #include "RenderX/Config.hpp"
+#include "RenderX/Logger.hpp"
 #include "RenderX/Vulkan/VulkanInstance.hpp"
 #include "RenderX/Vulkan/VulkanDebugMessenger.hpp"
 #include <vulkan/vulkan.h>
 #include <vector>
-
-#include <iostream>
+#include <string>
 
 namespace RenderX {
 	bool VulkanInstance::Initialize(Config& config) {
@@ -50,6 +50,18 @@ namespace RenderX {
             extensions.push_back(config.extensions[i]);
         }
 
+        // Check if all requested layers are supported
+        if (!CheckLayerSupport(layers)) {
+            Logger::Error("Layer support check failed");
+            return false;
+        }
+
+        // Check if all extensions are supported
+        if (!CheckExtensionSupport(extensions)) {
+            Logger::Error("Extensions support check failed");
+            return false;
+        }
+
         // Fills in VkInstanceCreateInfo struct
         VkInstanceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
@@ -68,15 +80,15 @@ namespace RenderX {
             createInfo.pNext = &debugMessengerCreateInfo;
 
             // Prints layer and extension count in debug mode
-            std::cout << "[RenderX] VkInstance setup" << std::endl;
-            std::cout << "[RenderX] Layer count: " << createInfo.enabledLayerCount << std::endl;
-            std::cout << "[RenderX] Extension count: " << createInfo.enabledExtensionCount << std::endl;
+            Logger::Info(std::string("Layer count: ") + std::to_string(createInfo.enabledLayerCount));
+            Logger::Info(std::string("Extension count: ") + std::to_string(createInfo.enabledExtensionCount));
         }
 
         // Tries to create Vulkan instance
         VkResult result = vkCreateInstance(&createInfo, nullptr, &m_instance);
 
         if (result != VK_SUCCESS) {
+            Logger::Error("Failed to create Vulkan instance");
             return false;
         }
 
@@ -89,5 +101,65 @@ namespace RenderX {
             vkDestroyInstance(m_instance, nullptr);
             m_instance = VK_NULL_HANDLE;
         }
+    }
+
+    bool VulkanInstance::CheckLayerSupport(const std::vector<const char*>& layers) {
+        // Load layer count
+        uint32_t layerCount = 0;
+        vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+
+        // Load available layers
+        std::vector<VkLayerProperties> availableLayers(layerCount);
+        vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+
+        // Check if all requested layers are available
+        uint32_t missingLayerCount = 0;
+        for (const char* requestedLayer : layers) {
+            bool found = false;
+
+            for (const auto& availableLayer : availableLayers) {
+                if (std::strcmp(requestedLayer, availableLayer.layerName) == 0) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                missingLayerCount++;
+                Logger::Error(std::string("Missing layer: ") + requestedLayer);
+            }
+        }
+
+        return missingLayerCount == 0;
+    }
+
+    bool VulkanInstance::CheckExtensionSupport(const std::vector<const char*>& extensions) {
+        // Load extension count
+        uint32_t extensionCount = 0;
+        vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+
+        // Load available extensions
+        std::vector<VkExtensionProperties> availableExtensions(extensionCount);
+        vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, availableExtensions.data());
+
+        // Check if all requested extensions are available
+        uint32_t missingExtensionCount = 0;
+        for (const char* requestedExtension : extensions) {
+            bool found = false;
+
+            for (const auto& availableExtension : availableExtensions) {
+                if (std::strcmp(requestedExtension, availableExtension.extensionName) == 0) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                missingExtensionCount++;
+                Logger::Error(std::string("Missing extension: ") + requestedExtension);
+            }
+        }
+
+        return missingExtensionCount == 0;
     }
 }

@@ -1,6 +1,6 @@
 #include "RenderX/Vulkan/VulkanDebugMessenger.hpp"
+#include "RenderX/Logger.hpp"
 #include <vulkan/vulkan.h>
-#include <iostream>
 
 namespace RenderX {
     // Static function used as a callback for the debug messenger
@@ -10,8 +10,23 @@ namespace RenderX {
         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
         void* pUserData) 
     {
+        // Determine severity of current message
+        std::string severity = "UNKNOWN";
+        if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
+            severity = "VERBOSE";
+        }
+        else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
+            severity = "INFO";
+        }
+        else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+            severity = "WARNING";
+        }
+        else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+            severity = "ERROR";
+        }
+
         // Prints message from callback to error stream
-        std::cerr << "[VULKAN] " << pCallbackData->pMessage << std::endl;
+        Logger::VulkanDebug(pCallbackData->pMessage, severity);
         return VK_FALSE;
     }
 
@@ -58,6 +73,8 @@ namespace RenderX {
         VkDebugUtilsMessengerCreateInfoEXT createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
         createInfo.messageSeverity =
+            //VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+            //VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
         createInfo.messageType =
