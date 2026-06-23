@@ -1,4 +1,5 @@
 #include "RenderX/Config.hpp"
+#include "RenderX/WindowHandle.hpp"
 #include "RenderX/Logger.hpp"
 #include "RenderX/Vulkan/VulkanInstance.hpp"
 #include "RenderX/Vulkan/VulkanDebugMessenger.hpp"
@@ -50,6 +51,9 @@ namespace RenderX {
             extensions.push_back(config.extensions[i]);
         }
 
+        // Adds required platform extensions
+        AddPlatformExtensions(extensions, config.windowHandle);
+
         // Check if all requested layers are supported
         if (!CheckLayerSupport(layers)) {
             RX_LOG_ERROR("Layer support check failed");
@@ -100,6 +104,15 @@ namespace RenderX {
         if (m_instance != VK_NULL_HANDLE) {
             vkDestroyInstance(m_instance, nullptr);
             m_instance = VK_NULL_HANDLE;
+        }
+    }
+
+    void VulkanInstance::AddPlatformExtensions(std::vector<const char*>& extensions, WindowHandle& windowHandle) {
+        switch (windowHandle.platform) {
+        case WindowPlatform::Win32:
+            extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
+            extensions.push_back("VK_KHR_win32_surface");
+            break;
         }
     }
 

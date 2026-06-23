@@ -39,6 +39,12 @@ namespace RenderX {
             }
         }
 
+        // Initialize the Vulkan surface
+        if (!m_context->m_surface.Initialize(m_context->m_instance.GetHandle(), m_context->m_config.windowHandle)) {
+            RX_LOG_ERROR("Failed to initialize the VulkanSurface");
+            return false;
+        }
+
         return true;
     }
 
@@ -49,6 +55,7 @@ namespace RenderX {
         }
 
         // Perform cleanup
+        m_context->m_surface.Shutdown(m_context->m_instance.GetHandle());
         m_context->m_debugMessenger.Shutdown(m_context->m_instance.GetHandle());
         m_context->m_instance.Shutdown();
 

@@ -3,6 +3,7 @@
 #include "RenderX/Config.hpp"
 #include "RenderX/Vulkan/VulkanInstance.hpp"
 #include "RenderX/Vulkan/VulkanDebugMessenger.hpp"
+#include "RenderX/Vulkan/VulkanSurface.hpp"
 
 namespace RenderX {
 	/*
@@ -13,5 +14,6 @@ namespace RenderX {
 		Config m_config;
 		VulkanInstance m_instance;
 		VulkanDebugMessenger m_debugMessenger;
+		VulkanSurface m_surface;
 	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "RenderX/Config.hpp"
+#include "RenderX/WindowHandle.hpp"
 #include <vulkan/vulkan.h>
 #include <vector>
 
@@ -30,6 +31,14 @@ namespace RenderX {
 		VkInstance GetHandle() const { return m_instance; };
 	private:
 		VkInstance m_instance = VK_NULL_HANDLE;
+
+		/**
+		 * @brief Adds all required extensions by the platform in config to the extensions list
+		 * 
+		 * @param extensions: List of extensions
+		 * @param config: Config struct with window handle
+		 */
+		void AddPlatformExtensions(std::vector<const char*>& extensions, WindowHandle& windowHandle);
 
 		/**
 		 * @brief Checks if all of the requested layers are available

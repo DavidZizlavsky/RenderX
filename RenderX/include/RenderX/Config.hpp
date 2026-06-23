@@ -1,4 +1,5 @@
 #pragma once
+#include "RenderX/WindowHandle.hpp"
 #include <vector>
 
 // RX_VERSION allows you to make version into uint32_t datatype
@@ -17,6 +18,8 @@ namespace RenderX {
 
 		std::vector<const char*> extensions;
 		std::vector<const char*> layers;
+
+		WindowHandle windowHandle;
 
 		bool debugging = false;
 	};
