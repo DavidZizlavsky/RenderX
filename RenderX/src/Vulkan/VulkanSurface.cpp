@@ -10,11 +10,17 @@ namespace RenderX {
 	bool VulkanSurface::Initialize(VkInstance instance, WindowHandle& windowHandle) {
 		// At this time only Win32 is supported
 		if (windowHandle.platform != WindowPlatform::Win32) {
+			RX_LOG_ERROR("Desired window API is not supported");
 			return false;
 		}
 
+		// Check window handle
+		if (windowHandle.window == nullptr) {
+			RX_LOG_ERROR("Win32 requires valid pointer in WindowHandle.window");
+		}
+
 		// Cast void pointer to windows handle
-		HWND hwnd = static_cast<HWND>(windowHandle.handle);
+		HWND hwnd = static_cast<HWND>(windowHandle.window);
 
 		// Create info for the surface
 		VkWin32SurfaceCreateInfoKHR createInfo{};

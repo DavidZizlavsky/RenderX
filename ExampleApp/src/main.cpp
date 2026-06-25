@@ -29,7 +29,7 @@ int main() {
     // Create window handle for Win32
     RenderX::WindowHandle windowHandle{};
     windowHandle.platform = RenderX::WindowPlatform::Win32;
-    windowHandle.handle = glfwGetWin32Window(window);
+    windowHandle.window = glfwGetWin32Window(window);
 
     // Create config and enable debugging
     RenderX::Config renderConfig;

@@ -6,7 +6,10 @@ namespace RenderX {
 	 */
 	enum class WindowPlatform {
 		Unknown = 0,
-		Win32
+		Win32,
+		X11,
+		Wayland,
+		Cocoa
 	};
 
 	/**
@@ -15,6 +18,7 @@ namespace RenderX {
 	struct WindowHandle {
 		WindowPlatform platform = WindowPlatform::Unknown;
 
-		void* handle = nullptr;
+		void* window = nullptr;
+		void* display = nullptr;
 	};
 }
