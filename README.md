@@ -6,4 +6,4 @@ Simple Vulkan renderer
 - CMake 3.20+
 
 ## Libraries
-- GLFW
+- GLFW (for example app)
