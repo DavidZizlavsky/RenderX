@@ -45,6 +45,12 @@ namespace RenderX {
             return false;
         }
 
+        // Initialize the Vulkan physical device
+        if (!m_context->m_physicalDevice.Initialize(m_context->m_instance.GetHandle(), m_context->m_surface.GetHandle())) {
+            RX_LOG_ERROR("Failed to initialize the VulkanPhysicalDevice");
+            return false;
+        }
+
         return true;
     }
 
@@ -55,6 +61,7 @@ namespace RenderX {
         }
 
         // Perform cleanup
+        m_context->m_physicalDevice.Shutdown();
         m_context->m_surface.Shutdown(m_context->m_instance.GetHandle());
         m_context->m_debugMessenger.Shutdown(m_context->m_instance.GetHandle());
         m_context->m_instance.Shutdown();
