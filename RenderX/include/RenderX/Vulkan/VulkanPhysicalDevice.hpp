@@ -69,7 +69,7 @@ namespace RenderX {
 		 * @param device: Valid physical device to rate
 		 * @return Score of the physical device
 		 */
-		int RateDevice(const VkPhysicalDevice& device);
+		int RateDevice(VkPhysicalDevice device);
 
 		VkPhysicalDevice m_device = VK_NULL_HANDLE;
 		PhysicalDeviceInfo m_info;

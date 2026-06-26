@@ -58,7 +58,7 @@ namespace RenderX {
 		return selectedDevice;
 	}
 
-	int VulkanPhysicalDevice::RateDevice(const VkPhysicalDevice& device) {
+	int VulkanPhysicalDevice::RateDevice(VkPhysicalDevice device) {
 		RX_ASSERT(device != VK_NULL_HANDLE);
 
 		int score = 0;
