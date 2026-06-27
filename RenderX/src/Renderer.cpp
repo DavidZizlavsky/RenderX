@@ -31,23 +31,36 @@ namespace RenderX {
             return false;
         }
 
+        // Cache instance handle
+        VkInstance instance = m_context->m_instance.GetHandle();
+
         // If debugging is enabled initialize the debug messenger
-        if (m_context->m_config.debugging) {
-            if (!m_context->m_debugMessenger.Initialize(m_context->m_instance.GetHandle())) {
+        if (config.debugging) {
+            if (!m_context->m_debugMessenger.Initialize(instance)) {
                 RX_LOG_ERROR("Failed to initialize debug messenger");
                 return false;
             }
         }
 
         // Initialize the Vulkan surface
-        if (!m_context->m_surface.Initialize(m_context->m_instance.GetHandle(), m_context->m_config.windowHandle)) {
+        if (!m_context->m_surface.Initialize(instance, config.windowHandle)) {
             RX_LOG_ERROR("Failed to initialize the VulkanSurface");
             return false;
         }
 
+        // Cache surface handle
+        VkSurfaceKHR surface = m_context->m_surface.GetHandle();
+
         // Initialize the Vulkan physical device
-        if (!m_context->m_physicalDevice.Initialize(m_context->m_instance.GetHandle(), m_context->m_surface.GetHandle())) {
+        if (!m_context->m_physicalDevice.Initialize(instance, surface)) {
             RX_LOG_ERROR("Failed to initialize the VulkanPhysicalDevice");
+            return false;
+        }
+
+        // Initialize the Vulkan logical device
+        QueueFamilyIndices indices = VulkanQueueFamily::Find(m_context->m_physicalDevice.GetHandle(), surface);
+        if (!m_context->m_device.Initialize(m_context->m_physicalDevice.GetHandle(), indices, surface)) {
+            RX_LOG_ERROR("Failed to initialize the VulkanDevice");
             return false;
         }
 
@@ -61,6 +74,7 @@ namespace RenderX {
         }
 
         // Perform cleanup
+        m_context->m_device.Shutdown();
         m_context->m_physicalDevice.Shutdown();
         m_context->m_surface.Shutdown(m_context->m_instance.GetHandle());
         m_context->m_debugMessenger.Shutdown(m_context->m_instance.GetHandle());

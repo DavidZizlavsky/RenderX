@@ -5,6 +5,7 @@
 #include "RenderX/Vulkan/VulkanDebugMessenger.hpp"
 #include "RenderX/Vulkan/VulkanSurface.hpp"
 #include "RenderX/Vulkan/VulkanPhysicalDevice.hpp"
+#include "RenderX/Vulkan/VulkanDevice.hpp"
 
 namespace RenderX {
 	/*
@@ -17,5 +18,6 @@ namespace RenderX {
 		VulkanDebugMessenger m_debugMessenger;
 		VulkanSurface m_surface;
 		VulkanPhysicalDevice m_physicalDevice;
+		VulkanDevice m_device;
 	};
 }
