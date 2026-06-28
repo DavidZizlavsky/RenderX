@@ -1,5 +1,6 @@
 #include "RenderX/Vulkan/VulkanPhysicalDevice.hpp"
 #include "RenderX/Vulkan/VulkanQueueFamily.hpp"
+#include <RenderX/Vulkan/VulkanSwapchainSupport.hpp>
 #include "RenderX/Logger.hpp"
 #include "RenderX/Assert.hpp"
 #include <vulkan/vulkan.h>
@@ -29,6 +30,7 @@ namespace RenderX {
 		vkGetPhysicalDeviceFeatures(m_device, &m_info.features);
 		vkGetPhysicalDeviceMemoryProperties(m_device, &m_info.memory);
 		m_info.queueFamilies = VulkanQueueFamily::Find(m_device, surface);
+		m_info.swapchainSupport = VulkanSwapchainSupport::Query(m_device, surface);
 
 		// Log selected GPU
 		RX_LOG_INFO("Using GPU: " << m_info.properties.deviceName);

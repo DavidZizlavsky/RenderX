@@ -3,6 +3,7 @@
 #include "RenderX/Logger.hpp"
 #include "RenderX/Vulkan/VulkanInstance.hpp"
 #include "RenderX/Vulkan/VulkanContext.hpp"
+#include <RenderX/Vulkan/VulkanSwapchainSupport.hpp>
 #include <memory>
 
 namespace RenderX {
@@ -64,6 +65,14 @@ namespace RenderX {
             return false;
         }
 
+        // Initialize the Vulkan swapchain
+        VkDevice logicalDevice = m_context->m_device.GetHandle();
+        SwapchainSupportDetails swapchainSupport = m_context->m_physicalDevice.GetInfo().swapchainSupport;
+        if (!m_context->m_swapchain.Initialize(logicalDevice, surface, indices, swapchainSupport)) {
+            RX_LOG_ERROR("Failed to initialize the VulkanSwapchain");
+            return false;
+        }
+
         return true;
     }
 
@@ -74,6 +83,7 @@ namespace RenderX {
         }
 
         // Perform cleanup
+        m_context->m_swapchain.Shutdown();
         m_context->m_device.Shutdown();
         m_context->m_physicalDevice.Shutdown();
         m_context->m_surface.Shutdown(m_context->m_instance.GetHandle());

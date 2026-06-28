@@ -6,6 +6,7 @@
 #include "RenderX/Vulkan/VulkanSurface.hpp"
 #include "RenderX/Vulkan/VulkanPhysicalDevice.hpp"
 #include "RenderX/Vulkan/VulkanDevice.hpp"
+#include "RenderX/Vulkan/VulkanSwapchain.hpp"
 
 namespace RenderX {
 	/*
@@ -19,5 +20,6 @@ namespace RenderX {
 		VulkanSurface m_surface;
 		VulkanPhysicalDevice m_physicalDevice;
 		VulkanDevice m_device;
+		VulkanSwapchain m_swapchain;
 	};
 }

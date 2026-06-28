@@ -1,5 +1,6 @@
 #pragma once
 #include "RenderX/Vulkan/VulkanQueueFamily.hpp"
+#include "RenderX/Vulkan/VulkanSwapchainSupport.hpp"
 #include <vulkan/vulkan.h>
 #include <vector>
 
@@ -10,6 +11,7 @@ namespace RenderX {
 	struct PhysicalDeviceInfo
 	{
 		QueueFamilyIndices queueFamilies{};
+		SwapchainSupportDetails swapchainSupport{};
 		VkPhysicalDeviceProperties properties{};
 		VkPhysicalDeviceFeatures features{};
 		VkPhysicalDeviceMemoryProperties memory{};
