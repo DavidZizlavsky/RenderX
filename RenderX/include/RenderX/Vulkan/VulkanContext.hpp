@@ -10,7 +10,7 @@
 
 namespace RenderX {
 	/*
-	 * @brief Implementation class hides dependencies of RenderX to user
+	 * @brief Holds ownership of Vulkan objects and helps hide dependencies of RenderX to user
 	 */
 	class Renderer::VulkanContext {
 	public:
