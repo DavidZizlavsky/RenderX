@@ -5,6 +5,7 @@
 #include "RenderX/Vulkan/VulkanContext.hpp"
 #include <RenderX/Vulkan/VulkanSwapchainSupport.hpp>
 #include <memory>
+#include <vector>
 
 namespace RenderX {
     Renderer::Renderer() = default;
@@ -73,6 +74,14 @@ namespace RenderX {
             return false;
         }
 
+        // Initialize the Vulkan image views
+        VkFormat format = m_context->m_swapchain.GetFormat();
+        const std::vector<VkImage>& images = m_context->m_swapchain.GetImages();
+        if (!m_context->m_imageViews.Initialize(logicalDevice, format, images)) {
+            RX_LOG_ERROR("Failed to initialize the VulkanImageViews");
+            return false;
+        }
+
         return true;
     }
 
@@ -83,6 +92,7 @@ namespace RenderX {
         }
 
         // Perform cleanup
+        m_context->m_imageViews.Shutdown();
         m_context->m_swapchain.Shutdown();
         m_context->m_device.Shutdown();
         m_context->m_physicalDevice.Shutdown();

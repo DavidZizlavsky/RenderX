@@ -34,6 +34,27 @@ namespace RenderX {
 		 * @return VkSwapchainKHR handle
 		 */
 		VkSwapchainKHR GetHandle() const { return m_swapchain; };
+
+		/**
+		 * @brief Returns VkFormat enum
+		 * 
+		 * @return VkFormat enum
+		 */
+		VkFormat GetFormat() const { return m_format; };
+
+		/**
+		 * @brief Returns VkExtent2D struct
+		 * 
+		 * @return VkExtent2D struct
+		 */
+		const VkExtent2D& GetExtent() const { return m_extent; };
+
+		/**
+		 * @brief Returns VkImage list
+		 * 
+		 * @return VkImage list
+		 */
+		const std::vector<VkImage>& GetImages() const { return m_images; };
 	private:
 		/**
 		 * @brief Chooses the surface format

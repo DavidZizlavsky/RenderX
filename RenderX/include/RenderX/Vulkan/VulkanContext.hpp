@@ -7,6 +7,7 @@
 #include "RenderX/Vulkan/VulkanPhysicalDevice.hpp"
 #include "RenderX/Vulkan/VulkanDevice.hpp"
 #include "RenderX/Vulkan/VulkanSwapchain.hpp"
+#include "RenderX/Vulkan/VulkanImageViews.hpp"
 
 namespace RenderX {
 	/*
@@ -21,5 +22,6 @@ namespace RenderX {
 		VulkanPhysicalDevice m_physicalDevice;
 		VulkanDevice m_device;
 		VulkanSwapchain m_swapchain;
+		VulkanImageViews m_imageViews;
 	};
 }
