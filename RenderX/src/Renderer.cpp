@@ -82,6 +82,21 @@ namespace RenderX {
             return false;
         }
 
+        // Initialize the Vulkan command pool
+        uint32_t graphicsQueue = indices.graphicsFamily.value();
+        if (!m_context->m_commandPool.Initialize(logicalDevice, graphicsQueue)) {
+            RX_LOG_ERROR("Failed to initialize the VulkanCommandPool");
+            return false;
+        }
+
+        // Initialize the Vulkan command buffers
+        uint32_t imageViewCount = static_cast<size_t>(m_context->m_imageViews.GetImageViews().size());
+        VkCommandPool commandPool = m_context->m_commandPool.GetHandle();
+        if (!m_context->m_commandBuffers.Initialize(logicalDevice, commandPool, imageViewCount)) {
+            RX_LOG_ERROR("Failed to initialize the VulkanCommandBuffers");
+            return false;
+        }
+
         return true;
     }
 
@@ -92,6 +107,8 @@ namespace RenderX {
         }
 
         // Perform cleanup
+        m_context->m_commandBuffers.Shutdown();
+        m_context->m_commandPool.Shutdown();
         m_context->m_imageViews.Shutdown();
         m_context->m_swapchain.Shutdown();
         m_context->m_device.Shutdown();

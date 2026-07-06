@@ -8,6 +8,8 @@
 #include "RenderX/Vulkan/VulkanDevice.hpp"
 #include "RenderX/Vulkan/VulkanSwapchain.hpp"
 #include "RenderX/Vulkan/VulkanImageViews.hpp"
+#include "RenderX/Vulkan/VulkanCommandPool.hpp"
+#include "RenderX/Vulkan/VulkanCommandBuffers.hpp"
 
 namespace RenderX {
 	/*
@@ -23,5 +25,7 @@ namespace RenderX {
 		VulkanDevice m_device;
 		VulkanSwapchain m_swapchain;
 		VulkanImageViews m_imageViews;
+		VulkanCommandPool m_commandPool;
+		VulkanCommandBuffers m_commandBuffers;
 	};
 }
