@@ -10,6 +10,7 @@
 #include "RenderX/Vulkan/VulkanImageViews.hpp"
 #include "RenderX/Vulkan/VulkanCommandPool.hpp"
 #include "RenderX/Vulkan/VulkanCommandBuffers.hpp"
+#include "RenderX/Vulkan/VulkanSyncObjects.hpp"
 
 namespace RenderX {
 	/*
@@ -27,5 +28,6 @@ namespace RenderX {
 		VulkanImageViews m_imageViews;
 		VulkanCommandPool m_commandPool;
 		VulkanCommandBuffers m_commandBuffers;
+		VulkanSyncObjects m_syncObjects;
 	};
 }

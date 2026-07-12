@@ -97,6 +97,12 @@ namespace RenderX {
             return false;
         }
 
+        // Initialize the Vulkan sync objects
+        if (!m_context->m_syncObjects.Initialize(logicalDevice, imageViewCount)) {
+            RX_LOG_ERROR("Failed to initialize the VulkanSyncObjects");
+            return false;
+        }
+
         return true;
     }
 
@@ -107,6 +113,7 @@ namespace RenderX {
         }
 
         // Perform cleanup
+        m_context->m_syncObjects.Shutdown();
         m_context->m_commandBuffers.Shutdown();
         m_context->m_commandPool.Shutdown();
         m_context->m_imageViews.Shutdown();
