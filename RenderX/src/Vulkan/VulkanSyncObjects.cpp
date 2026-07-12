@@ -36,7 +36,7 @@ namespace RenderX {
 
 			// Create in flight fence
 			VulkanFence fence = VulkanFence();
-			result = fence.Initialize(device, false);
+			result = fence.Initialize(device, true);
 			if (!result) {
 				RX_LOG_ERROR("Failed to initialize " << (i + 1) << ". in flight fence");
 				return false;
