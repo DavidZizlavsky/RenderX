@@ -73,3 +73,34 @@ target_link_libraries(
     RenderX
     glfw
 )
+
+# Compile ExampleApp's GLSL shaders to SPIR-V and place them next to the executable
+find_program(GLSLC glslc HINTS "$ENV{VULKAN_SDK}/Bin")
+if (NOT GLSLC)
+    message(FATAL_ERROR "glslc not found (expected in the Vulkan SDK's Bin directory) - required to compile shaders")
+endif()
+
+file(GLOB SHADER_SOURCES
+    ExampleApp/shaders/*.vert
+    ExampleApp/shaders/*.frag
+)
+
+set(SHADER_OUTPUT_DIR "${CMAKE_BINARY_DIR}/$<CONFIG>/shaders")
+
+foreach(SHADER ${SHADER_SOURCES})
+    get_filename_component(SHADER_NAME ${SHADER} NAME)
+    set(SPIRV_OUTPUT "${SHADER_OUTPUT_DIR}/${SHADER_NAME}.spv")
+
+    add_custom_command(
+        OUTPUT ${SPIRV_OUTPUT}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${SHADER_OUTPUT_DIR}
+        COMMAND ${GLSLC} ${SHADER} -o ${SPIRV_OUTPUT}
+        DEPENDS ${SHADER}
+        COMMENT "Compiling shader ${SHADER_NAME}"
+    )
+
+    list(APPEND SPIRV_BINARIES ${SPIRV_OUTPUT})
+endforeach()
+
+add_custom_target(Shaders DEPENDS ${SPIRV_BINARIES})
+add_dependencies(ExampleApp Shaders)

@@ -54,8 +54,11 @@ namespace RenderX {
 			queueCreateInfos.push_back(queueCreateInfo);
 		}
 
-		// TODO: add features
-		VkPhysicalDeviceFeatures deviceFeatures{};
+		// Vulkan 1.3 features: dynamic rendering (no VkRenderPass/VkFramebuffer) + synchronization2 (vkCmdPipelineBarrier2)
+		VkPhysicalDeviceVulkan13Features vulkan13Features{};
+		vulkan13Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+		vulkan13Features.dynamicRendering = VK_TRUE;
+		vulkan13Features.synchronization2 = VK_TRUE;
 
 		std::vector<const char*> deviceExtensions = {
 			VK_KHR_SWAPCHAIN_EXTENSION_NAME
@@ -64,10 +67,10 @@ namespace RenderX {
 		// Fill create info for Vulkan logical device
 		VkDeviceCreateInfo createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-		createInfo.pNext = nullptr;
+		createInfo.pNext = &vulkan13Features;
 		createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
 		createInfo.pQueueCreateInfos = queueCreateInfos.data();
-		createInfo.pEnabledFeatures = &deviceFeatures;
+		createInfo.pEnabledFeatures = nullptr;
 		createInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
 		createInfo.ppEnabledExtensionNames = deviceExtensions.data();
 

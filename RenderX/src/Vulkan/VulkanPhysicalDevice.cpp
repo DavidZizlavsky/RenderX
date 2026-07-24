@@ -5,6 +5,8 @@
 #include "RenderX/Assert.hpp"
 #include <vulkan/vulkan.h>
 #include <vector>
+#include <set>
+#include <string>
 
 namespace RenderX {
 	bool VulkanPhysicalDevice::Initialize(VkInstance instance, VkSurfaceKHR surface) {
@@ -83,10 +85,39 @@ namespace RenderX {
 	}
 
 	bool VulkanPhysicalDevice::IsDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface) {
-		// TODO: add extension check and swapchain support check
 		QueueFamilyIndices indices = VulkanQueueFamily::Find(device, surface);
+		if (!indices.IsComplete()) {
+			return false;
+		}
 
-		return indices.IsComplete();
+		if (!SupportsRequiredExtensions(device)) {
+			return false;
+		}
+
+		SwapchainSupportDetails swapchainSupport = VulkanSwapchainSupport::Query(device, surface);
+		if (swapchainSupport.formats.empty() || swapchainSupport.presentModes.empty()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool VulkanPhysicalDevice::SupportsRequiredExtensions(VkPhysicalDevice device) {
+		uint32_t extensionCount = 0;
+		vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
+
+		std::vector<VkExtensionProperties> availableExtensions(extensionCount);
+		vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
+
+		std::set<std::string> requiredExtensions = {
+			VK_KHR_SWAPCHAIN_EXTENSION_NAME
+		};
+
+		for (const VkExtensionProperties& extension : availableExtensions) {
+			requiredExtensions.erase(extension.extensionName);
+		}
+
+		return requiredExtensions.empty();
 	}
 
 	void VulkanPhysicalDevice::Shutdown() {

@@ -8,6 +8,7 @@
 #include "RenderX/Vulkan/VulkanDevice.hpp"
 #include "RenderX/Vulkan/VulkanSwapchain.hpp"
 #include "RenderX/Vulkan/VulkanImageViews.hpp"
+#include "RenderX/Vulkan/VulkanGraphicsPipeline.hpp"
 #include "RenderX/Vulkan/VulkanCommandPool.hpp"
 #include "RenderX/Vulkan/VulkanCommandBuffers.hpp"
 #include "RenderX/Vulkan/VulkanSyncObjects.hpp"
@@ -26,8 +27,12 @@ namespace RenderX {
 		VulkanDevice m_device;
 		VulkanSwapchain m_swapchain;
 		VulkanImageViews m_imageViews;
+		VulkanGraphicsPipeline m_graphicsPipeline;
 		VulkanCommandPool m_commandPool;
 		VulkanCommandBuffers m_commandBuffers;
 		VulkanSyncObjects m_syncObjects;
+
+		// Index into the per-image sync object arrays, cycling every DrawFrame() call
+		uint32_t m_currentFrame = 0;
 	};
 }

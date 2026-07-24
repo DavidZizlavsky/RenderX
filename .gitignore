@@ -17,6 +17,9 @@ x64/
 Debug/
 Release/
 
+# Visual Studio Code
+.vscode/
+
 # CMake
 CMakeCache.txt
 CMakeFiles/

@@ -46,7 +46,15 @@ int main() {
     // Main loop
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
+
+        if (!renderer.DrawFrame()) {
+            std::cout << "[App] Failed to draw frame" << std::endl;
+            break;
+        }
     }
+
+    // Wait for the GPU to finish before destroying anything
+    renderer.WaitIdle();
 
     // Cleanup Vulkan
     renderer.Shutdown();

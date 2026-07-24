@@ -57,6 +57,14 @@ namespace RenderX {
 		bool IsDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface);
 
 		/**
+		 * @brief Checks if the device supports the extensions required by RenderX (currently VK_KHR_swapchain)
+		 *
+		 * @param device: Physical device to check
+		 * @return True if all required extensions are supported
+		 */
+		bool SupportsRequiredExtensions(VkPhysicalDevice device);
+
+		/**
 		 * @brief Finds the suitable device with the best score
 		 * 
 		 * @param devices: List of physical devices

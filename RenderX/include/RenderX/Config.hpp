@@ -22,5 +22,10 @@ namespace RenderX {
 		WindowHandle windowHandle;
 
 		bool debugging = false;
+
+		// Paths (relative to the running executable's working directory, or absolute) to the
+		// compiled SPIR-V shaders used by the graphics pipeline
+		const char* vertexShaderPath = "shaders/triangle.vert.spv";
+		const char* fragmentShaderPath = "shaders/triangle.frag.spv";
 	};
 }
